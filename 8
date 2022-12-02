@@ -1,0 +1,91 @@
+#include&lt;stdio.h&gt;
+#include&lt;ctype.h&gt;
+#include&lt;string.h&gt;
+#include&lt;math.h&gt;
+#include&lt;stdlib.h&gt;
+int n,m=0,p,i=0,j=0;
+
+char a[10][10],f[10];
+void follow(char c);
+void first(char c);
+int main()
+{
+int i,z;
+char c,ch;
+printf(&quot;Enter the no of productions:\n&quot;);
+scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter the number of productions:\n&quot;);
+for(i=0;i&lt;n;i++)
+{
+scanf(&quot;%s%c&quot;,a[i],&amp;ch);
+}
+do
+{
+m=0;
+printf(&quot;Enter the elements whose first&amp;follow is to be found:&quot;);
+scanf(&quot;%c&quot;,&amp;c);
+first(c);
+printf(&quot;First(%c)={&quot;,c);
+for(i=0;i&lt;m;i++)
+{
+printf(&quot;%c&quot;,f[i]);
+}
+printf(&quot;}\n&quot;);
+strcpy(f,&quot; &quot;);
+m=0;
+follow(c);
+printf(&quot;Follow(%c)={&quot;,c);
+
+for(i=0;i&lt;m;i++)
+{
+printf(&quot;%c&quot;,f[i]);
+}
+printf(&quot;}\n&quot;);
+printf(&quot;continue(0/1)?&quot;);
+scanf(&quot;%d%c&quot;,&amp;z,&amp;ch);
+}
+while(z==1);
+return(0);
+}
+void first(char c)
+{
+int k;
+if(!isupper(c))
+{
+f[m++]=c;
+}
+for(k=0;k&lt;n;k++)
+{
+if(a[k][0]==c)
+{
+
+if(islower(a[k][2]))
+f[m++]=a[k][2];
+else
+{
+first(a[k][2]);
+}
+}
+
+}
+}
+void follow(char c)
+{
+if(a[0][0]==c)
+{
+f[m++]=&#39;$&#39;;
+}
+for(i=0;i&lt;n;i++)
+{
+for(j=2;j&lt;strlen(a[i]);j++)
+{
+if(a[i][j]==c)
+{
+if(a[i][j+1]!=&#39;\0&#39;)
+first(a[i][j+1]);
+if(a[i][j+1]==&#39;\0&#39;&amp;&amp;c!=a[i][0])
+follow(a[i][0]);
+}
+}
+}
+}
